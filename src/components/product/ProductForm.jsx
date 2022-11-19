@@ -1,14 +1,28 @@
 // TODO: copy codes from the ProductForm component here...
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { useForm } from "react-hook-form";
+import { useParams } from "react-router-dom";
 
-const ProductForm = ({ onSubmit }) => {
+const ProductForm = ({ onSubmit, mode }) => {
+  const [product, setProduct] = useState("");
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm();
+
+  useEffect(() => {
+    fetch(`http://localhost:8000/products/${ID}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setProduct(data);
+      })
+      .catch((error) => {});
+  }, []);
+  const { ID } = useParams();
+  console.log(product);
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -25,6 +39,7 @@ const ProductForm = ({ onSubmit }) => {
             {...register("name", {
               required: true,
             })}
+            value={setValue("name", product.name)}
           />
           {errors.name && (
             <div className="invalid-feedback">
@@ -41,6 +56,7 @@ const ProductForm = ({ onSubmit }) => {
             className={`form-control${errors.price ? " is-invalid" : ""}`}
             data-testid="price-input"
             placeholder="1000"
+            value={setValue("price", product.price)}
             {...register("price", {
               required: "وارد کردن قیمت اجباری است",
               min: { value: 100, message: "مقدار قیمت باید حداقل 100 باشد" },
@@ -60,6 +76,7 @@ const ProductForm = ({ onSubmit }) => {
             className="form-select"
             data-testid="category-select"
             {...register("category")}
+            value={setValue("category", product.category)}
           >
             <option value="mobile">موبایل</option>
             <option value="book">کتاب</option>
@@ -75,6 +92,7 @@ const ProductForm = ({ onSubmit }) => {
             data-testid="description-textarea"
             rows="3"
             {...register("description")}
+            value={setValue("description", product.description)}
           />
         </div>
       </div>
