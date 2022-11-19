@@ -1,11 +1,12 @@
 import 'assets/scss/style.scss'
 import 'bootstrap/dist/css/bootstrap.rtl.min.css'
 import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from "react-dom/client";
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { indexRoutes } from 'routes'
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
   <BrowserRouter>
     <Switch>
       {indexRoutes.map((prop, key) => {
@@ -13,5 +14,4 @@ ReactDOM.render(
       })}
     </Switch>
   </BrowserRouter>,
-  document.getElementById('root'),
 )
