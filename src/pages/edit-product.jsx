@@ -5,14 +5,14 @@ import { useParams } from "react-router-dom";
 const EditProduct = () => {
   const onSubmit = (data) => {
     axios
-      .put(`http://localhost:8000/products/${ID}`, data)
+      .put(`http://localhost:8000/products/${id}`, data)
       .then((response) => {
         console.log(response.data);
       })
       .catch((error) => {});
   };
 
-  const { ID } = useParams();
+  const { id } = useParams();
   return (
     <div className="card">
       <div className="card-header" data-testid="card-header">

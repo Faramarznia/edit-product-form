@@ -1,11 +1,10 @@
 // TODO: copy codes from the ProductForm component here...
-import React, { useEffect, useState } from "react";
-
+import axios from "axios";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router-dom";
 
 const ProductForm = ({ onSubmit, mode }) => {
-  const [product, setProduct] = useState("");
   const {
     register,
     handleSubmit,
@@ -13,16 +12,22 @@ const ProductForm = ({ onSubmit, mode }) => {
     formState: { errors },
   } = useForm();
 
+  const setFormDefaultValues = (product) => {
+    setValue("name", product.name);
+    setValue("price", product.price);
+    setValue("category", product.category);
+    setValue("description", product.description);
+  };
+
   useEffect(() => {
-    fetch(`http://localhost:8000/products/${ID}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setProduct(data);
+    if (mode === 'edit') {
+      axios.get(`http://localhost:8000/products/${id}`).then((res) => {
+        setFormDefaultValues(res.data)
       })
-      .catch((error) => {});
-  }, []);
-  const { ID } = useParams();
-  console.log(product);
+    }
+  }, [])
+
+  const { id } = useParams();
 
   return (
     <form onSubmit={handleSubmit((data) => onSubmit(data))}>
@@ -39,7 +44,6 @@ const ProductForm = ({ onSubmit, mode }) => {
             {...register("name", {
               required: true,
             })}
-            value={setValue("name", product.name)}
           />
           {errors.name && (
             <div className="invalid-feedback">
@@ -56,7 +60,6 @@ const ProductForm = ({ onSubmit, mode }) => {
             className={`form-control${errors.price ? " is-invalid" : ""}`}
             data-testid="price-input"
             placeholder="1000"
-            value={setValue("price", product.price)}
             {...register("price", {
               required: "وارد کردن قیمت اجباری است",
               min: { value: 100, message: "مقدار قیمت باید حداقل 100 باشد" },
@@ -76,7 +79,6 @@ const ProductForm = ({ onSubmit, mode }) => {
             className="form-select"
             data-testid="category-select"
             {...register("category")}
-            value={setValue("category", product.category)}
           >
             <option value="mobile">موبایل</option>
             <option value="book">کتاب</option>
@@ -92,7 +94,6 @@ const ProductForm = ({ onSubmit, mode }) => {
             data-testid="description-textarea"
             rows="3"
             {...register("description")}
-            value={setValue("description", product.description)}
           />
         </div>
       </div>
@@ -101,7 +102,7 @@ const ProductForm = ({ onSubmit, mode }) => {
         className="btn btn-primary mt-4 float-start"
         data-testid="submit-button"
       >
-        افزودن محصول
+        {mode === "edit" ? "ویرایش" : "افزودن"} محصول
       </button>
     </form>
   );

@@ -8,18 +8,18 @@
       "description": "توضیحات"
     },
     {
-      "id": 2,
       "name": "A54",
-      "price": "25000",
+      "price": "2500000",
       "category": "mobile",
-      "description": "توضیحاتی ندارم!"
+      "description": "توضیحاتی ندارم!",
+      "id": 2
     },
     {
-      "id": 3,
       "name": "Deep Work",
-      "price": 34000,
+      "price": "55000",
       "category": "book",
-      "description": "کتاب کار عمیق"
+      "description": "کتاب کار عمیق \nیه کتاب عالی برای بچه های خوب و دوست داشتنی...!\n",
+      "id": 3
     }
   ]
 }
